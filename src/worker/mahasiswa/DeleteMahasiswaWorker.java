@@ -3,18 +3,18 @@ package worker.mahasiswa;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
+import api.MahasiswaApiClient;
 import model.Mahasiswa;
-import service.MahasiswaService;
 import view.MahasiswaFrame;
 
 public class DeleteMahasiswaWorker extends SwingWorker<Void, Void> {
     private final MahasiswaFrame frame;
-    private final MahasiswaService mahasiswaService;
+    private final MahasiswaApiClient mahasiswaApiClient;
     private final Mahasiswa mahasiswa;
 
-    public DeleteMahasiswaWorker(MahasiswaFrame frame, MahasiswaService mahasiswaService, Mahasiswa mahasiswa) {
+    public DeleteMahasiswaWorker(MahasiswaFrame frame, MahasiswaApiClient mahasiswaApiClient, Mahasiswa mahasiswa) {
         this.frame = frame;
-        this.mahasiswaService = mahasiswaService;
+        this.mahasiswaApiClient = mahasiswaApiClient;
         this.mahasiswa = mahasiswa;
         frame.getProgressBar().setIndeterminate(true);
         frame.getProgressBar().setString("Deleting mahasiswa record...");
@@ -22,7 +22,7 @@ public class DeleteMahasiswaWorker extends SwingWorker<Void, Void> {
 
     @Override
     protected Void doInBackground() throws Exception {
-        mahasiswaService.deleteMahasiswa(mahasiswa);
+        mahasiswaApiClient.delete(mahasiswa.getId());
         return null;
     }
 

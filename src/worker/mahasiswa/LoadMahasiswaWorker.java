@@ -5,24 +5,24 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
+import api.MahasiswaApiClient;
 import model.Mahasiswa;
-import service.MahasiswaService;
 import view.MahasiswaFrame;
 
 public class LoadMahasiswaWorker extends SwingWorker<List<Mahasiswa>, Void> {
     private final MahasiswaFrame frame;
-    private final MahasiswaService mahasiswaService;
+    private final MahasiswaApiClient mahasiswaApiClient;
 
-    public LoadMahasiswaWorker(MahasiswaFrame frame, MahasiswaService mahasiswaService) {
+    public LoadMahasiswaWorker(MahasiswaFrame frame, MahasiswaApiClient mahasiswaApiClient) {
         this.frame = frame;
-        this.mahasiswaService = mahasiswaService;
+        this.mahasiswaApiClient = mahasiswaApiClient;
         frame.getProgressBar().setIndeterminate(true);
         frame.getProgressBar().setString("Loading mahasiswa data...");
     }
 
     @Override
     protected List<Mahasiswa> doInBackground() throws Exception {
-        return mahasiswaService.getAllMahasiswa();
+        return mahasiswaApiClient.findAll();
     }
 
     @Override

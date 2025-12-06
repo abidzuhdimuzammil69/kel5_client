@@ -10,9 +10,8 @@ import javax.swing.SwingWorker;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import api.MahasiswaApiClient;
 import model.Mahasiswa;
-import service.MahasiswaService;
-import service.MahasiswaServiceDefault;
 import view.MahasiswaDialog;
 import view.MahasiswaFrame;
 import worker.mahasiswa.DeleteMahasiswaWorker;
@@ -22,7 +21,7 @@ import worker.mahasiswa.UpdateMahasiswaWorker;
 
 public class MahasiswaController {
     private final MahasiswaFrame frame;
-    private final MahasiswaService mahasiswaService = new MahasiswaServiceDefault();
+    private final MahasiswaApiClient mahasiswaApiClient = new MahasiswaApiClient();
 
     private List<Mahasiswa> allMahasiswa = new ArrayList<>();
     private List<Mahasiswa> displayedMahasiswa = new ArrayList<>();
@@ -89,9 +88,9 @@ public class MahasiswaController {
             Mahasiswa mahasiswa = dialog.getMahasiswa();
             SwingWorker<Void, Void> worker;
             if (mahasiswaToEdit == null) {
-                worker = new SaveMahasiswaWorker(frame, mahasiswaService, mahasiswa);
+                worker = new SaveMahasiswaWorker(frame, mahasiswaApiClient, mahasiswa);
             } else {
-                worker = new UpdateMahasiswaWorker(frame, mahasiswaService, mahasiswa);
+                worker = new UpdateMahasiswaWorker(frame, mahasiswaApiClient, mahasiswa);
             }
             worker.addPropertyChangeListener(evt -> {
                 if (SwingWorker.StateValue.DONE.equals(evt.getNewValue())) {
@@ -115,7 +114,7 @@ public class MahasiswaController {
                 "Delete mahasiswa: " + mahasiswa.getNim() + " - " + mahasiswa.getNama() + "?",
                 "Confirm Delete", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if (confirm == JOptionPane.YES_OPTION) {
-            DeleteMahasiswaWorker worker = new DeleteMahasiswaWorker(frame, mahasiswaService, mahasiswa);
+            DeleteMahasiswaWorker worker = new DeleteMahasiswaWorker(frame, mahasiswaApiClient, mahasiswa);
             worker.addPropertyChangeListener(evt -> {
                 if (SwingWorker.StateValue.DONE.equals(evt.getNewValue())) {
                     loadAllMahasiswa();
@@ -128,7 +127,7 @@ public class MahasiswaController {
     private void loadAllMahasiswa() {
         frame.getProgressBar().setIndeterminate(true);
         frame.getProgressBar().setString("Loading data...");
-        LoadMahasiswaWorker worker = new LoadMahasiswaWorker(frame, mahasiswaService);
+        LoadMahasiswaWorker worker = new LoadMahasiswaWorker(frame, mahasiswaApiClient);
         worker.addPropertyChangeListener(evt -> {
             if (SwingWorker.StateValue.DONE.equals(evt.getNewValue())) {
                 try {

@@ -3,18 +3,18 @@ package worker.mahasiswa;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
+import api.MahasiswaApiClient;
 import model.Mahasiswa;
-import service.MahasiswaService;
 import view.MahasiswaFrame;
 
 public class SaveMahasiswaWorker extends SwingWorker<Void, Void> {
     private final MahasiswaFrame frame;
-    private final MahasiswaService mahasiswaService;
+    private final MahasiswaApiClient mahasiswaApiClient;
     private final Mahasiswa mahasiswa;
 
-    public SaveMahasiswaWorker(MahasiswaFrame frame, MahasiswaService mahasiswaService, Mahasiswa mahasiswa) {
+    public SaveMahasiswaWorker(MahasiswaFrame frame, MahasiswaApiClient mahasiswaApiClient, Mahasiswa mahasiswa) {
         this.frame = frame;
-        this.mahasiswaService = mahasiswaService;
+        this.mahasiswaApiClient = mahasiswaApiClient;
         this.mahasiswa = mahasiswa;
         frame.getProgressBar().setIndeterminate(true);
         frame.getProgressBar().setString("Saving new mahasiswa...");
@@ -22,7 +22,7 @@ public class SaveMahasiswaWorker extends SwingWorker<Void, Void> {
 
     @Override
     protected Void doInBackground() throws Exception {
-        mahasiswaService.createMahasiswa(mahasiswa);
+        mahasiswaApiClient.create(mahasiswa);
         return null;
     }
 

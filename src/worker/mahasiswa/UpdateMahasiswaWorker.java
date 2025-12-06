@@ -3,18 +3,18 @@ package worker.mahasiswa;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
+import api.MahasiswaApiClient;
 import model.Mahasiswa;
-import service.MahasiswaService;
 import view.MahasiswaFrame;
 
 public class UpdateMahasiswaWorker extends SwingWorker<Void, Void> {
     private final MahasiswaFrame frame;
-    private final MahasiswaService mahasiswaService;
+    private final MahasiswaApiClient mahasiswaApiClient;
     private final Mahasiswa mahasiswa;
 
-    public UpdateMahasiswaWorker(MahasiswaFrame frame, MahasiswaService mahasiswaService, Mahasiswa mahasiswa) {
+    public UpdateMahasiswaWorker(MahasiswaFrame frame, MahasiswaApiClient mahasiswaApiClient, Mahasiswa mahasiswa) {
         this.frame = frame;
-        this.mahasiswaService = mahasiswaService;
+        this.mahasiswaApiClient = mahasiswaApiClient;
         this.mahasiswa = mahasiswa;
         frame.getProgressBar().setIndeterminate(true);
         frame.getProgressBar().setString("Updating mahasiswa data...");
@@ -22,7 +22,7 @@ public class UpdateMahasiswaWorker extends SwingWorker<Void, Void> {
 
     @Override
     protected Void doInBackground() throws Exception {
-        mahasiswaService.updateMahasiswa(mahasiswa);
+        mahasiswaApiClient.update(mahasiswa);
         return null;
     }
 
