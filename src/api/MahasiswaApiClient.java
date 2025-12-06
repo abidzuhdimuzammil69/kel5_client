@@ -13,7 +13,7 @@ import com.google.gson.reflect.TypeToken;
 import model.Mahasiswa;
 
 public class MahasiswaApiClient {
-    private static final String BASE_URL = "http://localhost/application-tier-phps/public/mahasiswa";
+    private static final String BASE_URL = "http://localhost/application-tier-php/public/mahasiswa";
     private final HttpClient client = HttpClient.newHttpClient();
     private final Gson gson = new Gson();
 
