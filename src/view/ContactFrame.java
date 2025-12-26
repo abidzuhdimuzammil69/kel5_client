@@ -2,48 +2,47 @@ package view;
 
 import java.awt.Dimension;
 import java.awt.Font;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.UIManager;
-
+import javax.swing.*;
 import net.miginfocom.swing.MigLayout;
-import view.tablemodel.MahasiswaTableModel;
+import view.tablemodel.ContactTableModel;
 
-public class MahasiswaFrame extends JFrame {
-
+public class ContactFrame extends JFrame {
     private final JTextField searchField = new JTextField(30);
-    private final JButton addButton = new JButton("Add New");
+    private final JButton addButton = new JButton("Add New Contact");
     private final JButton refreshButton = new JButton("Refresh");
     private final JButton deleteButton = new JButton("Delete");
-    private final JLabel totalRecordsLabel = new JLabel("0 Records");
+    private final JLabel totalRecordsLabel = new JLabel("0 Contacts");
 
-    private final JTable mahasiswaTable = new JTable();
-    private final MahasiswaTableModel mahasiswaTableModel = new MahasiswaTableModel();
+    private final JTable contactTable = new JTable();
+    private final ContactTableModel contactTableModel = new ContactTableModel();
     private final JProgressBar progressBar = new JProgressBar();
 
-    public MahasiswaFrame() {
-        initializeUI();        
+    public ContactFrame() {
+        initializeUI();
     }
 
-    private void initializeUI(){
-        setTitle("EduCore - Management Mahasiswa");
+    private void initializeUI() {
+        setTitle("Contact Management System");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new MigLayout("fill, insets 20", "[grow]", "[]10[]10[grow]10[]10[]"));
 
-        mahasiswaTable.setModel(mahasiswaTableModel);
+        contactTable.setModel(contactTableModel);
+        contactTable.setAutoCreateRowSorter(true);
+        contactTable.setFillsViewportHeight(true);
         progressBar.setStringPainted(true);
 
-        add(new JLabel("List Mahasiswa"), "wrap, span 2");
+        // Set column widths
+        contactTable.getColumnModel().getColumn(0).setPreferredWidth(50);  // ID
+        contactTable.getColumnModel().getColumn(1).setPreferredWidth(150); // Name
+        contactTable.getColumnModel().getColumn(2).setPreferredWidth(120); // Phone
+        contactTable.getColumnModel().getColumn(3).setPreferredWidth(200); // Email
+        contactTable.getColumnModel().getColumn(4).setPreferredWidth(120); // Created
+        contactTable.getColumnModel().getColumn(5).setPreferredWidth(120); // Updated
+
+        add(new JLabel("Contact List"), "wrap, span 2");
         add(createSearchPanel(), "growx, w 80%");
         add(createButtonPanel(), "wrap, right, w 20%");
-        add(new JScrollPane(mahasiswaTable), "grow, wrap, span 2");
+        add(new JScrollPane(contactTable), "grow, wrap, span 2");
         add(progressBar, "growx, h 20!, wrap, span 2");
         add(totalRecordsLabel, "right, span 2");
 
@@ -62,9 +61,11 @@ public class MahasiswaFrame extends JFrame {
     private JPanel createButtonPanel() {
         JPanel panel = new JPanel(new MigLayout("right"));
         
-        addButton.setBackground(UIManager.getColor("Button.default.background"));
-        addButton.setForeground(UIManager.getColor("Button.default.foreground"));
-        addButton.setFont(addButton.getFont().deriveFont(Font.BOLD));
+        // Style buttons
+        Font boldFont = new Font("Segoe UI", Font.BOLD, 12);
+        addButton.setFont(boldFont);
+        refreshButton.setFont(boldFont);
+        deleteButton.setFont(boldFont);
         
         panel.add(deleteButton);
         panel.add(refreshButton);
@@ -73,6 +74,7 @@ public class MahasiswaFrame extends JFrame {
         return panel;
     }
 
+    // Getters
     public JTextField getSearchField() {
         return searchField;
     }
@@ -89,12 +91,12 @@ public class MahasiswaFrame extends JFrame {
         return deleteButton;
     }
 
-    public JTable getMahasiswaTable() {
-        return mahasiswaTable;
+    public JTable getContactTable() {
+        return contactTable;
     }
 
-    public MahasiswaTableModel getMahasiswaTableModel() {
-        return mahasiswaTableModel;
+    public ContactTableModel getContactTableModel() {
+        return contactTableModel;
     }
 
     public JProgressBar getProgressBar() {
@@ -104,5 +106,4 @@ public class MahasiswaFrame extends JFrame {
     public JLabel getTotalRecordsLabel() {
         return totalRecordsLabel;
     }
-
 }
